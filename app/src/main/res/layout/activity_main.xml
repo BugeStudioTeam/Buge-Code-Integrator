@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/md_theme_background">
+
+    <EditText
+        android:id="@+id/edtSourcePath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="e.g., /storage/emulated/0/MyProject"
+        android:text="/storage/emulated/0"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/md_theme_onSurface"
+        android:textColorHint="@color/md_theme_outline"
+        android:background="@color/md_theme_surface"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btnSelectSource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Example Path"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnIntegrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Integration"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnFileTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter File Types"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnHelp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Help"
+        android:layout_marginBottom="16dp" />
+
+    <CheckBox
+        android:id="@+id/cbExcludeBuild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exclude build folder"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/md_theme_onSurface" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ready to integrate files"
+        android:padding="12dp"
+        android:background="@color/md_theme_surfaceVariant"
+        android:textColor="@color/md_theme_onSurfaceVariant"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="File Size Ranking"
+        android:textStyle="bold"
+        android:textColor="@color/md_theme_onSurface"
+        android:layout_marginBottom="8dp" />
+
+    <ListView
+        android:id="@+id/lvFileRanking"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/md_theme_surfaceVariant" />
+
+</LinearLayout>

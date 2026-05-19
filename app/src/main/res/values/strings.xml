@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Code Integrator</string>
+    <string name="source_path_hint">e.g., /storage/emulated/0/MyProject</string>
+    <string name="btn_select_source">Example Path</string>
+    <string name="btn_integrate">Start Integration</string>
+    <string name="btn_file_types">Filter File Types</string>
+    <string name="btn_help">Help</string>
+    <string name="cb_exclude_build">Exclude build folder</string>
+    <string name="tv_status">Ready to integrate files</string>
+    <string name="tv_file_ranking">File Size Ranking</string>
+    <string name="example_path_set">Example path set</string>
+    <string name="path_cleared">Path cleared</string>
+    <string name="enter_path">Please enter a source path</string>
+    <string name="source_path_empty">Source path cannot be empty</string>
+    <string name="invalid_path">Invalid folder path</string>
+    <string name="source_path_invalid">Source folder does not exist or is not a directory</string>
+    <string name="integrating">Integrating files...</string>
+    <string name="no_text_files">No text files found</string>
+    <string name="integration_complete">Integration complete! Processed %d files</string>
+    <string name="integration_error">Error during integration</string>
+    <string name="integration_success" formatted="false">Integration successful!\nOutput file: %s\nProcessed files: %d</string>
+    <string name="permission_granted">Storage permission granted</string>
+    <string name="permission_denied">Storage permission required to access files</string>
+    <string name="help_title">Usage Instructions</string>
+    <string name="help_message">Usage Instructions:\n\n1. Enter source code folder path\n2. You can paste the path directly\n3. Click \'Example Path\' to see path format\n4. Check \'Exclude build folder\' to skip cache files\n5. Click \'Filter File Types\' to manage excluded file formats\n6. Click \'Start Integration\' to begin\n7. Output file will be created as \'SourceCodeIntegration.txt\'\n\nOutput Contents:\n• Project tree structure\n• Complete content of all text files\n• File size ranking\n\nDefault Supported File Types:\n• Code files: .java, .kt, .xml, .gradle, etc.\n• Config files: .properties, .pro, .gitignore, etc.\n• Script files: .sh, .bat, .cmd, etc.\n• Text files: .txt, .md, etc.\n\nDefault Filtered File Types:\n• Images, audio, video files\n• Archives\n• Binary executables\n• Documents, etc.\n• Supports custom filtering\n\nFile Ranking:\n• Shows largest text files in source folder\n• Helps identify large config files</string>
+    <string name="file_types_title">File Type Filter</string>
+    <string name="add_file_type">Add File Type</string>
+    <string name="reset_to_default">Reset to Default</string>
+    <string name="back">Back</string>
+    <string name="enter_file_type">Enter file type (e.g., .txt or txt)</string>
+    <string name="file_type_added">Added: %s</string>
+    <string name="file_type_removed">Removed: %s</string>
+    <string name="file_type_exists">File type already exists</string>
+    <string name="reset_complete">Reset to default settings</string>
+</resources>
