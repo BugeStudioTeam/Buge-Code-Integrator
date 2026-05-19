@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         setupClickListeners()
         checkAndRequestPermissions()
         
-        // 默认勾选排除 build 文件夹
         cbExcludeBuild.isChecked = true
     }
 
@@ -58,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         tvStatus = findViewById(R.id.tvStatus)
         lvFileRanking = findViewById(R.id.lvFileRanking)
         
-        // 设置灰色提示文字
         edtSourcePath.hint = "e.g., /storage/emulated/0/MyProject"
         
         fileSizeList = mutableListOf()
@@ -210,25 +208,20 @@ class MainActivity : AppCompatActivity() {
         
         Thread {
             try {
-                // 输出到用户指定的目录
                 val outputFile = File(sourceDir, "SourceCodeIntegration.txt")
                 val content = StringBuilder()
                 
-                // 写入项目树形结构
                 content.append("================================================================================\n")
                 content.append("【Project Tree Structure】\n")
                 content.append("================================================================================\n")
                 content.append("📁 ${sourceDir.name}\n")
                 buildProjectTree(sourceDir, content, "", 0)
                 
-                // 收集文件信息
                 val fileInfoList = mutableListOf<Triple<String, String, Long>>()
                 collectFiles(sourceDir, sourceDir, fileInfoList)
                 
-                // 按大小排序
                 fileInfoList.sortByDescending { it.third }
                 
-                // 写入每个文件的内容
                 for ((fullPath, relativePath, size) in fileInfoList) {
                     content.append("\n")
                     content.append("================================================================================\n")
@@ -257,17 +250,14 @@ class MainActivity : AppCompatActivity() {
                 content.append("Integration Complete! Total ${fileInfoList.size} files processed.\n")
                 content.append("================================================================================\n")
                 
-                // 写入文件
                 FileWriter(outputFile).use { writer ->
                     writer.write(content.toString())
                 }
                 
-                // 更新UI
                 runOnUiThread {
                     tvStatus.text = "Integration complete! Processed ${fileInfoList.size} files"
                     Toast.makeText(this, "Integration successful!\nOutput file: ${outputFile.absolutePath}\nProcessed files: ${fileInfoList.size}", Toast.LENGTH_LONG).show()
                     
-                    // 更新文件排名
                     fileSizeList.clear()
                     fileSizeList.add("=== Top 20 Largest Files ===")
                     for (i in 0 until minOf(20, fileInfoList.size)) {
@@ -296,12 +286,10 @@ class MainActivity : AppCompatActivity() {
             val isLast = index == files.size - 1
             val connector = if (isLast) "└── " else "├── "
             
-            // 跳过build文件夹（默认勾选，但尊重用户选择）
             if (cbExcludeBuild.isChecked && file.name.equals("build", ignoreCase = true)) {
                 continue
             }
             
-            // 跳过 .gradle 文件夹
             if (cbExcludeBuild.isChecked && file.name.equals(".gradle", ignoreCase = true)) {
                 continue
             }
@@ -323,12 +311,10 @@ class MainActivity : AppCompatActivity() {
         for (file in files) {
             if (file.name.startsWith(".")) continue
             
-            // 跳过build文件夹（默认勾选，但尊重用户选择）
             if (cbExcludeBuild.isChecked && file.name.equals("build", ignoreCase = true)) {
                 continue
             }
             
-            // 跳过 .gradle 文件夹
             if (cbExcludeBuild.isChecked && file.name.equals(".gradle", ignoreCase = true)) {
                 continue
             }
@@ -352,11 +338,9 @@ class MainActivity : AppCompatActivity() {
             ""
         }
         
-        // 获取排除的文件类型
         val sharedPreferences = getSharedPreferences("FileTypesPrefs", MODE_PRIVATE)
         val unsupportedTypes = getUnsupportedFileTypesFromPrefs(sharedPreferences)
         
-        // 检查是否在排除列表中
         for (unsupported in unsupportedTypes) {
             val unsupportedExt = if (unsupported.startsWith(".")) unsupported.substring(1) else unsupported
             if (extension == unsupportedExt.lowercase()) {
@@ -364,7 +348,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         
-        // 支持的文件扩展名
         val supportedExtensions = setOf(
             "txt", "java", "kt", "xml", "json", "gradle", "properties", "pro",
             "md", "cpp", "c", "h", "js", "html", "css", "php", "py", "rb",

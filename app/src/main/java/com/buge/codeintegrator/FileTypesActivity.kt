@@ -34,10 +34,8 @@ class FileTypesActivity : AppCompatActivity() {
         
         sharedPreferences = getSharedPreferences("FileTypesPrefs", MODE_PRIVATE)
         
-        // 加载保存的文件类型
         fileTypesList = getUnsupportedFileTypesFromPrefs(sharedPreferences).toMutableList()
         
-        // 设置 RecyclerView
         rvFileTypes.layoutManager = LinearLayoutManager(this)
         adapter = FileTypeAdapter(fileTypesList) { position ->
             showDeleteConfirmDialog(position)
