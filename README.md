@@ -48,5 +48,3 @@ The generated file includes:
 ## License
 
 GNU General Public License v3.0
-
-© 2026 BugeStudioTeam
