@@ -1,4 +1,4 @@
-# 📦 Buge Code Integrator 
+# 📦 Buge Code Integrator
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org/)
 [![Material3](https://img.shields.io/badge/Material%203-1.11.0-purple.svg)](https://m3.material.io/)
