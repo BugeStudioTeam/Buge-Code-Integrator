@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مدون الكود</string>
+    <string name="source_path_hint">مثال: /storage/emulated/0/MyProject</string>
+    <string name="btn_select_source">مسار مثال</string>
+    <string name="btn_integrate">بدء الدمج</string>
+    <string name="btn_file_types">تصفية أنواع الملفات</string>
+    <string name="btn_help">مساعدة</string>
+    <string name="cb_exclude_build">استبعاد مجلد build</string>
+    <string name="tv_status">جاهز</string>
+    <string name="tv_file_ranking">ترتيب أحجام الملفات</string>
+    <string name="example_path_set">تم تعيين مسار المثال</string>
+    <string name="path_cleared">تم مسح المسار</string>
+    <string name="enter_path">الرجاء إدخال مسار المصدر</string>
+    <string name="source_path_empty">لا يمكن أن يكون مسار المصدر فارغًا</string>
+    <string name="invalid_path">مسار المجلد غير صالح</string>
+    <string name="source_path_invalid">مجلد المصدر غير موجود أو ليس دليلاً</string>
+    <string name="integrating">جاري دمج الملفات...</string>
+    <string name="no_text_files">لم يتم العثور على ملفات نصية</string>
+    <string name="integration_complete">اكتمل الدمج! تمت معالجة %d ملفًا</string>
+    <string name="integration_error">خطأ أثناء الدمج</string>
+    <string name="integration_success" formatted="false">الدمج ناجح!\nملف الإخراج: %s\nالملفات المعالجة: %d</string>
+    <string name="permission_granted">تم منح إذن التخزين</string>
+    <string name="permission_denied">مطلوب إذن التخزين للوصول إلى الملفات</string>
+    <string name="help_title">تعليمات الاستخدام</string>
+    <string name="help_message">تعليمات الاستخدام:\n\n1. أدخل مسار مجلد التعليمات البرمجية المصدر\n2. يمكنك لصق المسار مباشرة\n3. انقر على "مسار مثال" لرؤية تنسيق المسار\n4. حدد "استبعاد مجلد build" لتخطي ملفات ذاكرة التخزين المؤقت\n5. انقر على "تصفية أنواع الملفات" لإدارة تنسيقات الملفات المستبعدة\n6. انقر على "بدء الدمج" للبدء\n7. سيتم إنشاء ملف الإخراج باسم "SourceCodeIntegration.txt" في المجلد المحدد\n\nمحتويات الإخراج:\n• هيكل الشجرة للمشروع\n• المحتوى الكامل لجميع الملفات النصية\n• ترتيب أحجام الملفات\n\nأنواع الملفات المدعومة افتراضيًا:\n• ملفات الكود: .java, .kt, .xml, .gradle إلخ\n• ملفات التكوين: .properties, .pro, .gitignore إلخ\n• ملفات السكربت: .sh, .bat, .cmd إلخ\n• الملفات النصية: .txt, .md إلخ\n\nأنواع الملفات المستبعدة افتراضيًا:\n• الصور وملفات الصوت والفيديو\n• الأرشيفات\n• الملفات التنفيذية\n• المستندات إلخ\n• يدعم التصفية المخصصة\n\nترتيب الملفات:\n• يعرض أكبر الملفات النصية في مجلد المصدر\n• يساعد في تحديد ملفات التكوين الكبيرة</string>
+    <string name="file_types_title">تصفية أنواع الملفات</string>
+    <string name="add_file_type">إضافة نوع ملف</string>
+    <string name="reset_to_default">استعادة الافتراضي</string>
+    <string name="back">رجوع</string>
+    <string name="enter_file_type">أدخل نوع الملف (مثال: .txt أو txt)</string>
+    <string name="file_type_added">تمت الإضافة: %s</string>
+    <string name="file_type_removed">تمت الإزالة: %s</string>
+    <string name="file_type_exists">نوع الملف موجود بالفعل</string>
+    <string name="reset_complete">تمت الاستعادة إلى الإعدادات الافتراضية</string>
+</resources>

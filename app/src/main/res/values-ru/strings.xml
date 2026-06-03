@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Code Integrator</string>
+    <string name="source_path_hint">например: /storage/emulated/0/MyProject</string>
+    <string name="btn_select_source">Пример пути</string>
+    <string name="btn_integrate">Начать интеграцию</string>
+    <string name="btn_file_types">Фильтр типов файлов</string>
+    <string name="btn_help">Помощь</string>
+    <string name="cb_exclude_build">Исключить папку build</string>
+    <string name="tv_status">Готов</string>
+    <string name="tv_file_ranking">Рейтинг размеров файлов</string>
+    <string name="example_path_set">Пример пути установлен</string>
+    <string name="path_cleared">Путь очищен</string>
+    <string name="enter_path">Пожалуйста, введите путь к исходникам</string>
+    <string name="source_path_empty">Путь к исходникам не может быть пустым</string>
+    <string name="invalid_path">Неверный путь к папке</string>
+    <string name="source_path_invalid">Исходная папка не существует или не является директорией</string>
+    <string name="integrating">Интеграция файлов...</string>
+    <string name="no_text_files">Текстовые файлы не найдены</string>
+    <string name="integration_complete">Интеграция завершена! Обработано %d файлов</string>
+    <string name="integration_error">Ошибка при интеграции</string>
+    <string name="integration_success" formatted="false">Интеграция успешна!\nВыходной файл: %s\nОбработано файлов: %d</string>
+    <string name="permission_granted">Разрешение на доступ к хранилищу предоставлено</string>
+    <string name="permission_denied">Требуется разрешение для доступа к файлам</string>
+    <string name="help_title">Инструкция по использованию</string>
+    <string name="help_message">Инструкция по использованию:\n\n1. Введите путь к папке с исходным кодом\n2. Вы можете вставить путь напрямую\n3. Нажмите "Пример пути", чтобы увидеть формат пути\n4. Отметьте "Исключить папку build", чтобы пропустить кэш-файлы\n5. Нажмите "Фильтр типов файлов" для управления исключаемыми форматами\n6. Нажмите "Начать интеграцию", чтобы начать\n7. Выходной файл будет создан как "SourceCodeIntegration.txt" в выбранной папке\n\nСодержимое вывода:\n• Древовидная структура проекта\n• Полное содержание всех текстовых файлов\n• Рейтинг размеров файлов\n\nПоддерживаемые типы файлов по умолчанию:\n• Файлы кода: .java, .kt, .xml, .gradle и т.д.\n• Конфигурационные файлы: .properties, .pro, .gitignore и т.д.\n• Скрипты: .sh, .bat, .cmd и т.д.\n• Текстовые файлы: .txt, .md и т.д.\n\nИсключаемые типы файлов по умолчанию:\n• Изображения, аудио, видеофайлы\n• Архивы\n• Исполняемые файлы\n• Документы и т.д.\n• Поддерживает пользовательскую фильтрацию\n\nРейтинг файлов:\n• Показывает самые большие текстовые файлы в исходной папке\n• Помогает выявить большие конфигурационные файлы</string>
+    <string name="file_types_title">Фильтр типов файлов</string>
+    <string name="add_file_type">Добавить тип файла</string>
+    <string name="reset_to_default">Сбросить на стандартные</string>
+    <string name="back">Назад</string>
+    <string name="enter_file_type">Введите тип файла (например, .txt или txt)</string>
+    <string name="file_type_added">Добавлено: %s</string>
+    <string name="file_type_removed">Удалено: %s</string>
+    <string name="file_type_exists">Тип файла уже существует</string>
+    <string name="reset_complete">Сброшено на стандартные настройки</string>
+</resources>

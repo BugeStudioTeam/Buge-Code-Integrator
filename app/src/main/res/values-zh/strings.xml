@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">代码整合器</string>
+    <string name="source_path_hint">例如：/storage/emulated/0/MyProject</string>
+    <string name="btn_select_source">示例路径</string>
+    <string name="btn_integrate">开始整合</string>
+    <string name="btn_file_types">文件类型过滤</string>
+    <string name="btn_help">帮助</string>
+    <string name="cb_exclude_build">排除 build 文件夹</string>
+    <string name="tv_status">准备就绪</string>
+    <string name="tv_file_ranking">文件大小排名</string>
+    <string name="example_path_set">已设置示例路径</string>
+    <string name="path_cleared">路径已清空</string>
+    <string name="enter_path">请输入源路径</string>
+    <string name="source_path_empty">源路径不能为空</string>
+    <string name="invalid_path">无效的文件夹路径</string>
+    <string name="source_path_invalid">源文件夹不存在或不是目录</string>
+    <string name="integrating">正在整合文件...</string>
+    <string name="no_text_files">未找到文本文件</string>
+    <string name="integration_complete">整合完成！已处理 %d 个文件</string>
+    <string name="integration_error">整合过程中出错</string>
+    <string name="integration_success" formatted="false">整合成功！\n输出文件：%s\n已处理文件：%d</string>
+    <string name="permission_granted">已授予存储权限</string>
+    <string name="permission_denied">需要存储权限才能访问文件</string>
+    <string name="help_title">使用说明</string>
+    <string name="help_message">使用说明：\n\n1. 输入源代码文件夹路径\n2. 可以直接粘贴路径\n3. 点击"示例路径"查看路径格式\n4. 勾选"排除 build 文件夹"跳过缓存文件\n5. 点击"文件类型过滤"管理排除的文件格式\n6. 点击"开始整合"开始处理\n7. 输出文件将在所选文件夹中创建为"SourceCodeIntegration.txt"\n\n输出内容：\n• 项目树形结构\n• 所有文本文件的完整内容\n• 文件大小排名\n\n默认支持的文件类型：\n• 代码文件：.java, .kt, .xml, .gradle 等\n• 配置文件：.properties, .pro, .gitignore 等\n• 脚本文件：.sh, .bat, .cmd 等\n• 文本文件：.txt, .md 等\n\n默认排除的文件类型：\n• 图片、音频、视频文件\n• 压缩包\n• 二进制可执行文件\n• 文档等\n• 支持自定义过滤\n\n文件排名：\n• 显示源文件夹中最大的文本文件\n• 帮助识别大型配置文件</string>
+    <string name="file_types_title">文件类型过滤</string>
+    <string name="add_file_type">添加文件类型</string>
+    <string name="reset_to_default">恢复默认</string>
+    <string name="back">返回</string>
+    <string name="enter_file_type">输入文件类型（例如 .txt 或 txt）</string>
+    <string name="file_type_added">已添加：%s</string>
+    <string name="file_type_removed">已移除：%s</string>
+    <string name="file_type_exists">文件类型已存在</string>
+    <string name="reset_complete">已恢复默认设置</string>
+</resources>

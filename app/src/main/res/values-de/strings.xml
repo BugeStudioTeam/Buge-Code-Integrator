@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Code Integrator</string>
+    <string name="source_path_hint">z.B. /storage/emulated/0/MyProject</string>
+    <string name="btn_select_source">Beispielpfad</string>
+    <string name="btn_integrate">Integration starten</string>
+    <string name="btn_file_types">Dateitypen filtern</string>
+    <string name="btn_help">Hilfe</string>
+    <string name="cb_exclude_build">Build-Ordner ausschließen</string>
+    <string name="tv_status">Bereit</string>
+    <string name="tv_file_ranking">Dateigrößen-Ranking</string>
+    <string name="example_path_set">Beispielpfad gesetzt</string>
+    <string name="path_cleared">Pfad gelöscht</string>
+    <string name="enter_path">Bitte geben Sie einen Quellpfad ein</string>
+    <string name="source_path_empty">Quellpfad darf nicht leer sein</string>
+    <string name="invalid_path">Ungültiger Ordnerpfad</string>
+    <string name="source_path_invalid">Quellordner existiert nicht oder ist kein Verzeichnis</string>
+    <string name="integrating">Integriere Dateien...</string>
+    <string name="no_text_files">Keine Textdateien gefunden</string>
+    <string name="integration_complete">Integration abgeschlossen! %d Dateien verarbeitet</string>
+    <string name="integration_error">Fehler bei der Integration</string>
+    <string name="integration_success" formatted="false">Integration erfolgreich!\nAusgabedatei: %s\nVerarbeitete Dateien: %d</string>
+    <string name="permission_granted">Speicherberechtigung erteilt</string>
+    <string name="permission_denied">Speicherberechtigung erforderlich</string>
+    <string name="help_title">Bedienungsanleitung</string>
+    <string name="help_message">Bedienungsanleitung:\n\n1. Geben Sie den Quellcode-Ordnerpfad ein\n2. Sie können den Pfad direkt einfügen\n3. Klicken Sie auf "Beispielpfad", um das Pfadformat zu sehen\n4. Aktivieren Sie "Build-Ordner ausschließen", um Cache-Dateien zu überspringen\n5. Klicken Sie auf "Dateitypen filtern", um ausgeschlossene Dateiformate zu verwalten\n6. Klicken Sie auf "Integration starten", um zu beginnen\n7. Die Ausgabedatei wird als "SourceCodeIntegration.txt" im ausgewählten Ordner erstellt\n\nAusgabeinhalt:\n• Projektbaumstruktur\n• Vollständiger Inhalt aller Textdateien\n• Dateigrößen-Ranking\n\nStandardmäßig unterstützte Dateitypen:\n• Codedateien: .java, .kt, .xml, .gradle usw.\n• Konfigurationsdateien: .properties, .pro, .gitignore usw.\n• Skriptdateien: .sh, .bat, .cmd usw.\n• Textdateien: .txt, .md usw.\n\nStandardmäßig ausgeschlossene Dateitypen:\n• Bilder, Audio-, Videodateien\n• Archive\n• Binärdateien\n• Dokumente usw.\n• Unterstützt benutzerdefinierte Filterung\n\nDatei-Ranking:\n• Zeigt die größten Textdateien im Quellordner\n• Hilft bei der Identifizierung großer Konfigurationsdateien</string>
+    <string name="file_types_title">Dateitypen-Filter</string>
+    <string name="add_file_type">Dateityp hinzufügen</string>
+    <string name="reset_to_default">Auf Standard zurücksetzen</string>
+    <string name="back">Zurück</string>
+    <string name="enter_file_type">Dateityp eingeben (z.B. .txt oder txt)</string>
+    <string name="file_type_added">Hinzugefügt: %s</string>
+    <string name="file_type_removed">Entfernt: %s</string>
+    <string name="file_type_exists">Dateityp existiert bereits</string>
+    <string name="reset_complete">Auf Standardeinstellungen zurückgesetzt</string>
+</resources>
