@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/md_theme_background">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/md_theme_primary"
+        app:title="@string/settings_title"
+        app:titleTextColor="@color/md_theme_onPrimary"
+        app:navigationIcon="@drawable/ic_back" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_appearance"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/md_theme_onSurface"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Theme tab - top large radius, bottom small radius -->
+            <FrameLayout
+                android:id="@+id/themeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_list_item_top">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_theme"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/themeToggleGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnThemeLight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/theme_light"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnThemeDark"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/theme_dark"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnThemeSystem"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/theme_system"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Language tab - top small radius, bottom large radius -->
+            <FrameLayout
+                android:id="@+id/languageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_list_item_bottom">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_language"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:layout_marginBottom="8dp" />
+
+                    <Spinner
+                        android:id="@+id/languageSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_background"
+                        android:padding="12dp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_about"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="@color/md_theme_onSurface"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- About group - all large radius -->
+            <FrameLayout
+                android:id="@+id/aboutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_list_item_single">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/aboutVersion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_version"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:paddingVertical="4dp" />
+
+                    <TextView
+                        android:id="@+id/aboutAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_author"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:paddingVertical="4dp" />
+
+                    <TextView
+                        android:id="@+id/aboutDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_description"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="@color/md_theme_onSurfaceVariant"
+                        android:paddingVertical="4dp" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

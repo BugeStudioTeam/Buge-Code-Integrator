@@ -1,16 +1,15 @@
 package com.buge.codeintegrator
 
-import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
+import java.util.*
 
 class FileTypesActivity : AppCompatActivity() {
 
@@ -20,7 +19,61 @@ class FileTypesActivity : AppCompatActivity() {
     private lateinit var btnReset: Button
     private lateinit var fileTypesList: MutableList<String>
     private lateinit var adapter: FileTypeAdapter
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: android.content.SharedPreferences
+
+    companion object {
+        private const val PREFS_NAME = "SettingsPrefs"
+        private const val KEY_LANGUAGE = "language_code"
+        private var currentLocale: Locale? = null
+    }
+
+    override fun attachBaseContext(newBase: android.content.Context) {
+        val locale = getSavedLocale(newBase)
+        val config = Configuration(newBase.resources.configuration)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale)
+        } else {
+            @Suppress("DEPRECATION")
+            config.locale = locale
+        }
+        val context = newBase.createConfigurationContext(config)
+        currentLocale = locale
+        super.attachBaseContext(context)
+    }
+
+    override fun getResources(): Resources {
+        val resources = super.getResources()
+        val locale = currentLocale ?: getSavedLocale(this)
+        val config = Configuration(resources.configuration)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale)
+        } else {
+            @Suppress("DEPRECATION")
+            config.locale = locale
+        }
+        resources.updateConfiguration(config, resources.displayMetrics)
+        return resources
+    }
+
+    private fun getSavedLocale(context: android.content.Context): Locale {
+        try {
+            val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
+            val languageCode = prefs.getString(KEY_LANGUAGE, "system") ?: "system"
+            
+            if (languageCode != "system") {
+                return when (languageCode) {
+                    "zh" -> Locale("zh")
+                    "de" -> Locale("de")
+                    "ru" -> Locale("ru")
+                    "ar" -> Locale("ar")
+                    else -> Locale("en")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return Locale.getDefault()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +85,16 @@ class FileTypesActivity : AppCompatActivity() {
         btnReset = findViewById(R.id.btnResetToDefault)
         val btnBack: Button = findViewById(R.id.btnBack)
         
+        // Set text using resources
+        btnAdd.text = getString(R.string.add_file_type)
+        btnReset.text = getString(R.string.reset_to_default)
+        btnBack.text = getString(R.string.back)
+        etFileType.hint = getString(R.string.enter_file_type)
+        
         sharedPreferences = getSharedPreferences("FileTypesPrefs", MODE_PRIVATE)
         
-        // 加载保存的文件类型
         fileTypesList = getUnsupportedFileTypesFromPrefs(sharedPreferences).toMutableList()
         
-        // 设置 RecyclerView
         rvFileTypes.layoutManager = LinearLayoutManager(this)
         adapter = FileTypeAdapter(fileTypesList) { position ->
             showDeleteConfirmDialog(position)
@@ -53,12 +110,12 @@ class FileTypesActivity : AppCompatActivity() {
                     adapter.notifyItemInserted(fileTypesList.size - 1)
                     saveFileTypes()
                     etFileType.setText("")
-                    Toast.makeText(this, "Added: $formatted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.file_type_added, formatted), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.file_type_exists, Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Please enter a file type", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.enter_file_type, Toast.LENGTH_SHORT).show()
             }
         }
         
@@ -70,34 +127,34 @@ class FileTypesActivity : AppCompatActivity() {
             finish()
         }
     }
-    
+
     private fun showDeleteConfirmDialog(position: Int) {
         val item = fileTypesList[position]
         MaterialAlertDialogBuilder(this)
-            .setTitle("Remove file type")
-            .setMessage("Are you sure you want to remove \"$item\"?")
-            .setPositiveButton("Remove") { _, _ ->
+            .setTitle(R.string.remove_file_type)
+            .setMessage(getString(R.string.remove_confirm_message, item))
+            .setPositiveButton(R.string.remove) { _, _ ->
                 fileTypesList.removeAt(position)
                 adapter.notifyItemRemoved(position)
                 saveFileTypes()
-                Toast.makeText(this, "Removed: $item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.file_type_removed, item), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
     
     private fun showResetConfirmDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Reset to default")
-            .setMessage("This will restore all default file types. Continue?")
-            .setPositiveButton("Reset") { _, _ ->
+            .setTitle(R.string.reset_confirm_title)
+            .setMessage(R.string.reset_confirm_message)
+            .setPositiveButton(R.string.reset) { _, _ ->
                 fileTypesList.clear()
                 fileTypesList.addAll(getDefaultFileTypes())
                 adapter.notifyDataSetChanged()
                 saveFileTypes()
-                Toast.makeText(this, "Reset to default", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.reset_complete, Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
     
@@ -116,7 +173,7 @@ class FileTypesActivity : AppCompatActivity() {
         )
     }
     
-    private fun getUnsupportedFileTypesFromPrefs(sharedPreferences: SharedPreferences): Array<String> {
+    private fun getUnsupportedFileTypesFromPrefs(sharedPreferences: android.content.SharedPreferences): Array<String> {
         val savedTypes = sharedPreferences.getString("excluded_types", "")
         return if (savedTypes.isNullOrEmpty()) {
             getDefaultFileTypes().toTypedArray()

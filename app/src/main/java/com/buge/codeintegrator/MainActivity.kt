@@ -1,10 +1,10 @@
 package com.buge.codeintegrator
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.FileWriter
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnSelectSource: Button
     private lateinit var btnHelp: Button
     private lateinit var btnFileTypes: Button
+    private lateinit var btnSettings: Button
     private lateinit var cbExcludeBuild: CheckBox
     private lateinit var tvStatus: TextView
     private lateinit var lvFileRanking: ListView
@@ -34,6 +34,57 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_MANAGE_STORAGE = 101
+        private const val PREFS_NAME = "SettingsPrefs"
+        private const val KEY_LANGUAGE = "language_code"
+        private var currentLocale: Locale? = null
+    }
+
+    override fun attachBaseContext(newBase: android.content.Context) {
+        val locale = getSavedLocale(newBase)
+        val config = Configuration(newBase.resources.configuration)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale)
+        } else {
+            @Suppress("DEPRECATION")
+            config.locale = locale
+        }
+        val context = newBase.createConfigurationContext(config)
+        currentLocale = locale
+        super.attachBaseContext(context)
+    }
+
+    override fun getResources(): Resources {
+        val resources = super.getResources()
+        val locale = currentLocale ?: getSavedLocale(this)
+        val config = Configuration(resources.configuration)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            config.setLocale(locale)
+        } else {
+            @Suppress("DEPRECATION")
+            config.locale = locale
+        }
+        resources.updateConfiguration(config, resources.displayMetrics)
+        return resources
+    }
+
+    private fun getSavedLocale(context: android.content.Context): Locale {
+        try {
+            val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
+            val languageCode = prefs.getString(KEY_LANGUAGE, "system") ?: "system"
+            
+            if (languageCode != "system") {
+                return when (languageCode) {
+                    "zh" -> Locale("zh")
+                    "de" -> Locale("de")
+                    "ru" -> Locale("ru")
+                    "ar" -> Locale("ar")
+                    else -> Locale("en")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return Locale.getDefault()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +95,17 @@ class MainActivity : AppCompatActivity() {
         setupClickListeners()
         checkAndRequestPermissions()
         
-        // 默认勾选排除 build 文件夹
+        // Enable exclude build folder by default
         cbExcludeBuild.isChecked = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshUI()
+    }
+
+    private fun refreshUI() {
+        tvStatus.text = getString(R.string.tv_status)
     }
 
     private fun initViews() {
@@ -54,28 +114,33 @@ class MainActivity : AppCompatActivity() {
         btnSelectSource = findViewById(R.id.btnSelectSource)
         btnHelp = findViewById(R.id.btnHelp)
         btnFileTypes = findViewById(R.id.btnFileTypes)
+        btnSettings = findViewById(R.id.btnSettings)
         cbExcludeBuild = findViewById(R.id.cbExcludeBuild)
         tvStatus = findViewById(R.id.tvStatus)
         lvFileRanking = findViewById(R.id.lvFileRanking)
         
-        // 设置灰色提示文字
-        edtSourcePath.hint = "e.g., /storage/emulated/0/MyProject"
+        // Set text using resources
+        btnSelectSource.text = getString(R.string.btn_select_source)
+        btnIntegrate.text = getString(R.string.btn_integrate)
+        btnFileTypes.text = getString(R.string.btn_file_types)
+        btnHelp.text = getString(R.string.btn_help)
+        btnSettings.text = getString(R.string.settings)
+        cbExcludeBuild.text = getString(R.string.cb_exclude_build)
+        tvStatus.text = getString(R.string.tv_status)
         
         fileSizeList = mutableListOf()
         rankingAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, fileSizeList)
         lvFileRanking.adapter = rankingAdapter
-        
-        tvStatus.text = "Ready to integrate files"
     }
 
     private fun setupClickListeners() {
         btnSelectSource.setOnClickListener {
             if (edtSourcePath.text.toString().trim().isEmpty()) {
                 edtSourcePath.setText("/storage/emulated/0")
-                Toast.makeText(this, "Example path set", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.example_path_set, Toast.LENGTH_SHORT).show()
             } else {
                 edtSourcePath.setText("")
-                Toast.makeText(this, "Path cleared", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.path_cleared, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -94,13 +159,17 @@ class MainActivity : AppCompatActivity() {
         btnFileTypes.setOnClickListener {
             startActivity(Intent(this, FileTypesActivity::class.java))
         }
+
+        btnSettings.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     private fun showHelpDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Usage Instructions")
-            .setMessage("Usage Instructions:\n\n1. Enter source code folder path\n2. You can paste the path directly\n3. Click 'Example Path' to see path format\n4. Check 'Exclude build folder' to skip cache files (enabled by default)\n5. Click 'Filter File Types' to manage excluded file formats\n6. Click 'Start Integration' to begin\n7. Output file will be created as 'SourceCodeIntegration.txt' in the selected folder\n\nOutput Contents:\n• Project tree structure\n• Complete content of all text files\n• File size ranking\n\nDefault Supported File Types:\n• Code files: .java, .kt, .xml, .gradle, etc.\n• Config files: .properties, .pro, .gitignore, etc.\n• Script files: .sh, .bat, .cmd, etc.\n• Text files: .txt, .md, etc.\n\nDefault Filtered File Types:\n• Images, audio, video files\n• Archives\n• Binary executables\n• Documents, etc.\n\nFile Ranking:\n• Shows largest text files in source folder\n• Helps identify large config files")
-            .setPositiveButton("Got it", null)
+            .setTitle(R.string.help_title)
+            .setMessage(R.string.help_message)
+            .setPositiveButton("OK", null)
             .show()
     }
 
@@ -145,14 +214,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestManageStoragePermission() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Storage Permission Required")
-            .setMessage("This app needs access to manage all files to read your source code folders and save output files. Please grant permission in the next screen.")
-            .setPositiveButton("Grant") { _, _ ->
+            .setTitle(R.string.storage_permission_title)
+            .setMessage(R.string.storage_permission_message)
+            .setPositiveButton(R.string.grant) { _, _ ->
                 val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                 intent.data = android.net.Uri.parse("package:$packageName")
                 startActivityForResult(intent, REQUEST_CODE_MANAGE_STORAGE)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
@@ -164,11 +233,11 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
-                tvStatus.text = "Ready to integrate files"
+                Toast.makeText(this, R.string.permission_granted, Toast.LENGTH_SHORT).show()
+                tvStatus.text = getString(R.string.tv_status)
             } else {
-                Toast.makeText(this, "Permission required to access files", Toast.LENGTH_LONG).show()
-                tvStatus.text = "Permission denied"
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show()
+                tvStatus.text = getString(R.string.permission_denied)
             }
         }
     }
@@ -178,11 +247,11 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_MANAGE_STORAGE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
-                    Toast.makeText(this, "Storage permission granted", Toast.LENGTH_SHORT).show()
-                    tvStatus.text = "Ready to integrate files"
+                    Toast.makeText(this, R.string.permission_granted, Toast.LENGTH_SHORT).show()
+                    tvStatus.text = getString(R.string.tv_status)
                 } else {
-                    Toast.makeText(this, "Storage permission denied", Toast.LENGTH_LONG).show()
-                    tvStatus.text = "Permission denied"
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show()
+                    tvStatus.text = getString(R.string.permission_denied)
                 }
             }
         }
@@ -191,44 +260,39 @@ class MainActivity : AppCompatActivity() {
     private fun integrateSourceFiles() {
         val sourcePath = edtSourcePath.text.toString().trim()
         if (sourcePath.isEmpty()) {
-            Toast.makeText(this, "Please enter a source path", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.enter_path, Toast.LENGTH_SHORT).show()
             return
         }
 
         val sourceDir = File(sourcePath)
         if (!sourceDir.exists()) {
-            Toast.makeText(this, "Path does not exist", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.source_path_invalid, Toast.LENGTH_SHORT).show()
             return
         }
         
         if (!sourceDir.isDirectory) {
-            Toast.makeText(this, "Not a directory", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.invalid_path, Toast.LENGTH_SHORT).show()
             return
         }
 
-        tvStatus.text = "Integrating files..."
+        tvStatus.text = getString(R.string.integrating)
         
         Thread {
             try {
-                // 输出到用户指定的目录
                 val outputFile = File(sourceDir, "SourceCodeIntegration.txt")
                 val content = StringBuilder()
                 
-                // 写入项目树形结构
                 content.append("================================================================================\n")
                 content.append("【Project Tree Structure】\n")
                 content.append("================================================================================\n")
                 content.append("📁 ${sourceDir.name}\n")
                 buildProjectTree(sourceDir, content, "", 0)
                 
-                // 收集文件信息
                 val fileInfoList = mutableListOf<Triple<String, String, Long>>()
                 collectFiles(sourceDir, sourceDir, fileInfoList)
                 
-                // 按大小排序
                 fileInfoList.sortByDescending { it.third }
                 
-                // 写入每个文件的内容
                 for ((fullPath, relativePath, size) in fileInfoList) {
                     content.append("\n")
                     content.append("================================================================================\n")
@@ -257,17 +321,18 @@ class MainActivity : AppCompatActivity() {
                 content.append("Integration Complete! Total ${fileInfoList.size} files processed.\n")
                 content.append("================================================================================\n")
                 
-                // 写入文件
                 FileWriter(outputFile).use { writer ->
                     writer.write(content.toString())
                 }
                 
-                // 更新UI
                 runOnUiThread {
-                    tvStatus.text = "Integration complete! Processed ${fileInfoList.size} files"
-                    Toast.makeText(this, "Integration successful!\nOutput file: ${outputFile.absolutePath}\nProcessed files: ${fileInfoList.size}", Toast.LENGTH_LONG).show()
+                    tvStatus.text = getString(R.string.integration_complete, fileInfoList.size)
+                    Toast.makeText(
+                        this,
+                        getString(R.string.integration_success, outputFile.absolutePath, fileInfoList.size),
+                        Toast.LENGTH_LONG
+                    ).show()
                     
-                    // 更新文件排名
                     fileSizeList.clear()
                     fileSizeList.add("=== Top 20 Largest Files ===")
                     for (i in 0 until minOf(20, fileInfoList.size)) {
@@ -279,8 +344,8 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
-                    tvStatus.text = "Error during integration"
-                    Toast.makeText(this, "Integration error: ${e.message}", Toast.LENGTH_LONG).show()
+                    tvStatus.text = getString(R.string.integration_error)
+                    Toast.makeText(this, R.string.integration_error, Toast.LENGTH_LONG).show()
                 }
             }
         }.start()
@@ -296,12 +361,10 @@ class MainActivity : AppCompatActivity() {
             val isLast = index == files.size - 1
             val connector = if (isLast) "└── " else "├── "
             
-            // 跳过build文件夹（默认勾选，但尊重用户选择）
             if (cbExcludeBuild.isChecked && file.name.equals("build", ignoreCase = true)) {
                 continue
             }
             
-            // 跳过 .gradle 文件夹
             if (cbExcludeBuild.isChecked && file.name.equals(".gradle", ignoreCase = true)) {
                 continue
             }
@@ -323,12 +386,10 @@ class MainActivity : AppCompatActivity() {
         for (file in files) {
             if (file.name.startsWith(".")) continue
             
-            // 跳过build文件夹（默认勾选，但尊重用户选择）
             if (cbExcludeBuild.isChecked && file.name.equals("build", ignoreCase = true)) {
                 continue
             }
             
-            // 跳过 .gradle 文件夹
             if (cbExcludeBuild.isChecked && file.name.equals(".gradle", ignoreCase = true)) {
                 continue
             }
@@ -352,11 +413,9 @@ class MainActivity : AppCompatActivity() {
             ""
         }
         
-        // 获取排除的文件类型
         val sharedPreferences = getSharedPreferences("FileTypesPrefs", MODE_PRIVATE)
         val unsupportedTypes = getUnsupportedFileTypesFromPrefs(sharedPreferences)
         
-        // 检查是否在排除列表中
         for (unsupported in unsupportedTypes) {
             val unsupportedExt = if (unsupported.startsWith(".")) unsupported.substring(1) else unsupported
             if (extension == unsupportedExt.lowercase()) {
@@ -364,7 +423,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         
-        // 支持的文件扩展名
         val supportedExtensions = setOf(
             "txt", "java", "kt", "xml", "json", "gradle", "properties", "pro",
             "md", "cpp", "c", "h", "js", "html", "css", "php", "py", "rb",
@@ -375,7 +433,7 @@ class MainActivity : AppCompatActivity() {
         return extension in supportedExtensions
     }
     
-    private fun getUnsupportedFileTypesFromPrefs(sharedPreferences: SharedPreferences): Array<String> {
+    private fun getUnsupportedFileTypesFromPrefs(sharedPreferences: android.content.SharedPreferences): Array<String> {
         val savedTypes = sharedPreferences.getString("excluded_types", "")
         return if (savedTypes.isNullOrEmpty()) {
             arrayOf(
